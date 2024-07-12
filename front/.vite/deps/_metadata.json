@@ -1,0 +1,25 @@
+{
+  "hash": "71cbb9e4",
+  "configHash": "210dae3b",
+  "lockfileHash": "bdcf32e8",
+  "browserHash": "4d285ff2",
+  "optimized": {
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "eb153538",
+      "needsInterop": true
+    },
+    "@radix-ui/themes": {
+      "src": "../../node_modules/@radix-ui/themes/dist/esm/index.js",
+      "file": "@radix-ui_themes.js",
+      "fileHash": "a9637ac2",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-UCHGQPRO": {
+      "file": "chunk-UCHGQPRO.js"
+    }
+  }
+}
