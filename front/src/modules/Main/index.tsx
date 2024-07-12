@@ -1,4 +1,4 @@
-import { Flex, Text, Button } from '@radix-ui/themes';
+import { Flex, Text, Button, TabNav } from '@radix-ui/themes';
 import { useNavigate } from 'react-router';
 
 function MainApp() {
@@ -9,10 +9,13 @@ function MainApp() {
 	};
 
 	return (
-		<Flex direction="column" gap="2">
-			<Text className="bg-red-500">main</Text>
-			<Button onClick={() => handleHome()}>ir para home</Button>
-		</Flex>
+		<TabNav.Root>
+			<TabNav.Link href="#" active>
+				Account
+			</TabNav.Link>
+			<TabNav.Link href="/home">Documents</TabNav.Link>
+			<TabNav.Link href="#">Settings</TabNav.Link>
+		</TabNav.Root>
 	);
 }
 
