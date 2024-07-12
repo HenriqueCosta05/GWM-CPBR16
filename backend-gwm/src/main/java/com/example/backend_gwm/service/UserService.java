@@ -11,6 +11,6 @@ public interface UserService {
     List<User> listAll();
     Optional<User> listById(String id);
     User create(User newUser);
-    User update(User newUser);
+    User update(User newUser, String id);
     void delete(String id);
 }

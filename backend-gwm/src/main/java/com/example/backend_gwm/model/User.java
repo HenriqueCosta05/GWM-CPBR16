@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 @Data
@@ -25,6 +26,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @NotNull
     @Column(name = "phone")
     private String phoneNumber;
 
