@@ -1,10 +1,12 @@
 package com.example.backend_gwm.service.impl;
 
+import com.example.backend_gwm.model.Meeting;
 import com.example.backend_gwm.model.User;
 import com.example.backend_gwm.repository.UserRepository;
 import com.example.backend_gwm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,5 +54,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String id) {
         userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void addMeetingToUser(String userId, String meetingId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        Meeting meeting = new Meeting();
+        meeting.setId(meetingId);
+
+        user.getMeetings().add(meeting);
+
+        userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Meeting> getMeetingsByUser(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        return user.getMeetings();
     }
 }

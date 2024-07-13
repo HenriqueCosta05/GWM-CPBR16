@@ -14,4 +14,5 @@ public interface UserService {
     User update(User newUser, String id);
     void delete(String id);
 
+    void addMeetingToUser(String userId, String meetingId);
 }

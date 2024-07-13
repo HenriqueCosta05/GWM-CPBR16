@@ -1,7 +1,6 @@
 package com.example.backend_gwm.model;
 
 import com.example.backend_gwm.enums.UserRole;
-import com.example.backend_gwm.enums.WeekDays;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -50,9 +49,18 @@ public class User {
     @Column(name = "cpf")
     private String cpf;
 
-    @ElementCollection()
+    @ElementCollection
+    @CollectionTable(name = "user_schedule", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "schedule")
     private List<String> schedule;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_meeting",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "meeting_id")
+    )
+    private List<Meeting> meetings;
 
     public List<String> getSchedule() {
         if (this.getUserRole().equals(UserRole.VOLUNTEER)) {
