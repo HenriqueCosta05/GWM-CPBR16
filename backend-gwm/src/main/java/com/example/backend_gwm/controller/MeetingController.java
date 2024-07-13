@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 
 @RestController
 @RequestMapping("/api/meetings")
@@ -34,11 +35,6 @@ public class MeetingController {
         return new ResponseEntity<>(createdMeeting, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{meetingId}/users/{userId}")
-    public ResponseEntity<String> addUserToMeeting(@PathVariable String meetingId, @PathVariable String userId) {
-        userService.addMeetingToUser(userId, meetingId);
-        return ResponseEntity.ok("Usuário associado à reunião com sucesso.");
-    }
 
 
 }

@@ -1,13 +1,8 @@
-import { Flex, Text, Button } from '@radix-ui/themes';
 import './App.css';
+import MainRoutes from './common/routes';
 
 function App() {
-	return (
-		<Flex direction="column" gap="2">
-			<Text className="bg-red-500">Hello from Radix Themes :)</Text>
-			<Button>Let's go</Button>
-		</Flex>
-	);
+	return <MainRoutes />;
 }
 
 export default App;

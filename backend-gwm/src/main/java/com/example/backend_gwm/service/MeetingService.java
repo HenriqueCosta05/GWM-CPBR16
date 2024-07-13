@@ -15,5 +15,4 @@ public interface MeetingService {
 
     void deleteMeeting(String id);
 
-    public void associateUserWithMeeting(String userId, String meetingId);
 }

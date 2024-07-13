@@ -1,5 +1,6 @@
 package com.example.backend_gwm.controller;
 
+import com.example.backend_gwm.dto.EmailAndPasswordRequestDTO;
 import com.example.backend_gwm.model.User;
 import com.example.backend_gwm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+@CrossOrigin(origins = "*")
 
 @Controller
 public class UserController {
@@ -27,6 +29,12 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable String id) {
         Optional<User> User = userService.listById(id);
         return User.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> getUserByEmail(@RequestBody EmailAndPasswordRequestDTO emailRequest) {
+        Optional<User> user = userService.listByEmail(emailRequest.getEmail());
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/user")

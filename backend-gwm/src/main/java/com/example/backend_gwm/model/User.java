@@ -54,13 +54,6 @@ public class User {
     @Column(name = "schedule")
     private List<String> schedule;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_meeting",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "meeting_id")
-    )
-    private List<Meeting> meetings;
 
     public List<String> getSchedule() {
         if (this.getUserRole().equals(UserRole.VOLUNTEER)) {

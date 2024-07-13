@@ -56,24 +56,10 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    @Transactional
-    public void addMeetingToUser(String userId, String meetingId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
-        Meeting meeting = new Meeting();
-        meeting.setId(meetingId);
-
-        user.getMeetings().add(meeting);
-
-        userRepository.save(user);
+    @Override
+    public Optional<User> listByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
-    @Transactional(readOnly = true)
-    public List<Meeting> getMeetingsByUser(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        return user.getMeetings();
-    }
 }
