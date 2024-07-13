@@ -1,21 +1,33 @@
-import { Flex, Text, Button, TabNav } from '@radix-ui/themes';
-import { useNavigate } from 'react-router';
+import { JitsiMeeting } from '@jitsi/react-sdk';
 
 function MainApp() {
-	const navigation = useNavigate();
-
-	const handleHome = () => {
-		navigation('/home');
-	};
-
 	return (
-		<TabNav.Root>
-			<TabNav.Link href="#" active>
-				Account
-			</TabNav.Link>
-			<TabNav.Link href="/home">Documents</TabNav.Link>
-			<TabNav.Link href="#">Settings</TabNav.Link>
-		</TabNav.Root>
+		<>
+			<JitsiMeeting
+				domain={'meet.jit.si'}
+				roomName="PleaseUseAGoodRoomName"
+				configOverwrite={{
+					startWithAudioMuted: true,
+					disableModeratorIndicator: true,
+					startScreenSharing: true,
+					enableEmailInStats: false,
+				}}
+				interfaceConfigOverwrite={{
+					DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+				}}
+				userInfo={{
+					displayName: 'gabriel',
+					email: 'gabriel@mail.com',
+				}}
+				onApiReady={(externalApi) => {
+					// here you can attach custom event listeners to the Jitsi Meet External API
+					// you can also store it locally to execute commands
+				}}
+				getIFrameRef={(iframeRef) => {
+					iframeRef.style.height = '400px';
+				}}
+			/>
+		</>
 	);
 }
 
