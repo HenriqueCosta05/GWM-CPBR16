@@ -33,7 +33,7 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @NotNull
@@ -54,20 +54,4 @@ public class User {
     @Column(name = "schedule")
     private List<String> schedule;
 
-
-    public List<String> getSchedule() {
-        if (this.getUserRole().equals(UserRole.VOLUNTEER)) {
-            return schedule;
-        } else {
-            throw new UnsupportedOperationException("Access denied. Only volunteers can access this field.");
-        }
-    }
-
-    public void setSchedule(List<String> schedule) {
-        if (this.getUserRole().equals(UserRole.VOLUNTEER)) {
-            this.schedule = schedule;
-        } else {
-            throw new UnsupportedOperationException("Access denied. Only volunteers can access this field.");
-        }
-    }
 }
