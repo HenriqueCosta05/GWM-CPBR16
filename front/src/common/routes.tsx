@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Home from '../modules/Home';
 import MainApp from '../modules/Main';
 import CreateUser from '../modules/CreateUser';
@@ -9,12 +9,36 @@ import Request from '../modules/Request';
 import Meet from '../modules/Meet';
 import Services from '../modules/Services';
 import About from '../modules/About';
+import { useEffect } from 'react';
+
+//@ts-ignore
+const AuthGuard = ({ children }) => {
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const all = localStorage.getItem('all');
+		const userRole = localStorage.getItem('userRole');
+
+		if (all && userRole) {
+			navigate('/home');
+		}
+	}, [navigate]);
+
+	return children;
+};
 
 export default function MainRoutes() {
 	return (
 		<Routes>
 			<Route path="/" element={<Layout />}>
-				<Route index element={<MainApp />} />
+				<Route
+					index
+					element={
+						<AuthGuard>
+							<MainApp />
+						</AuthGuard>
+					}
+				/>
 				<Route path="/home" element={<Home />} />
 				<Route path="/create-user" element={<Layout />}>
 					<Route index element={<CreateUser />} />

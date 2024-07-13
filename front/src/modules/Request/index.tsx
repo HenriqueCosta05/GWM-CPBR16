@@ -6,11 +6,13 @@ import {
 	FormLabel,
 	Input,
 	VStack,
+	useToast,
 } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import InputMask from 'react-input-mask';
 import { format, parse, isValid } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 import useHandleSubmit from '../../hooks/useHandleSubmit';
 
 const RequestForm = () => {
@@ -20,6 +22,8 @@ const RequestForm = () => {
 	const [textTime, setTextTime] = useState('');
 	const datePickerRef = useRef<any>(null);
 	const timePickerRef = useRef<any>(null);
+	const toast = useToast();
+	const navigate = useNavigate();
 
 	const handleDateChange = (date: Date) => {
 		setSelectedDate(date);
@@ -55,12 +59,25 @@ const RequestForm = () => {
 		}
 	};
 
-	const handleSubmit = useHandleSubmit(
-		selectedDate,
-		selectedTime,
-		textDate,
-		textTime
-	); // Use o hook
+	// const handleSubmit = useHandleSubmit(
+	// 	selectedDate,
+	// 	selectedTime,
+	// 	textDate,
+	// 	textTime
+	// );
+
+	const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		// handleSubmit(e);
+		toast({
+			title: 'Solicitação enviada.',
+			description:
+				'Solicitação enviada por sucesso. Acompanhe seu e-mail para confirmar a data de atendimento.',
+			status: 'success',
+			duration: 5000,
+			isClosable: true,
+		});
+		navigate('/');
+	};
 
 	return (
 		<Box
@@ -74,7 +91,7 @@ const RequestForm = () => {
 			bg="white"
 			color="black"
 		>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleFormSubmit}>
 				<VStack spacing={4}>
 					<FormControl id="date">
 						<FormLabel>Data de Atendimento</FormLabel>

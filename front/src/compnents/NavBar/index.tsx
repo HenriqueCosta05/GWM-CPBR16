@@ -16,10 +16,9 @@ import logo from '../../assets/logo-small.png';
 const Links = [
 	{ name: 'Home', path: '/home' },
 	{ name: 'Sobre nós', path: '/about' },
-	{ name: 'Solicitações', path: '/requests' },
+	{ name: 'Solicitações', path: '/requests', role: 'VOLUNTEER' },
 	{ name: 'Solicitar', path: '/request' },
-	{ name: 'Atendimentos', path: '/services' },
-	{ name: 'Meet', path: '/meeting' },
+	{ name: 'Atendimentos', path: '/services', role: 'VOLUNTEER' },
 ];
 
 const NavLink = ({ name, path }: { name: string; path: string }) => (
@@ -44,6 +43,19 @@ const Navbar: React.FC = () => {
 
 	const handleClickLogo = () => navigate('/');
 
+	const handleLogout = () => {
+		localStorage.clear();
+		navigate('/sign-in');
+	};
+
+	const userRole = localStorage.getItem('userRole');
+	const isAuthenticated =
+		localStorage.getItem('all') !== null && userRole !== null;
+
+	const filteredLinks = isAuthenticated
+		? Links.filter((link) => !link.role || link.role === userRole)
+		: Links.filter((link) => link.name === 'Home' || link.name === 'Sobre nós');
+
 	return (
 		<Box bg={useColorModeValue('gray.100', 'gray.900')} px={4} w={'100%'}>
 			<Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -59,48 +71,45 @@ const Navbar: React.FC = () => {
 						<img src={logo} alt="Logo" />
 					</Box>
 					<HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
-						{Links.map((link) => (
+						{filteredLinks.map((link) => (
 							<NavLink key={link.name} name={link.name} path={link.path} />
 						))}
 					</HStack>
 				</HStack>
 				<Flex alignItems={'center'}>
-					<Button
-						variant={'solid'}
-						colorScheme={'teal'}
-						size={'sm'}
-						mr={4}
-						onClick={() => navigate('/sign-up')}
-						// onClick={() => {
-						// 	const eventTitle = 'Meeting with John';
-						// 	const startDate = '20240725T150000Z'; // Start date and time in UTC
-						// 	const endDate = '20240725T160000Z'; // End date and time in UTC
-						// 	const description =
-						// 		'Discuss project details. Join the meeting here: http://meet.jit.si/obstar-e';
-						// 	const location = 'Office';
-
-						// 	const googleCalendarLink = `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(
-						// 		eventTitle
-						// 	)}&dates=${startDate}/${endDate}&details=${encodeURIComponent(
-						// 		description
-						// 	)}&location=${encodeURIComponent(location)}&sf=true&output=xml`;
-
-						// 	console.log(googleCalendarLink);
-
-						// }}
-					>
-						Cadastrar
-					</Button>
-					<Button onClick={() => navigate('/sign-in')} size={'sm'}>
-						Entrar
-					</Button>
+					{isAuthenticated ? (
+						<Button
+							variant={'solid'}
+							colorScheme={'teal'}
+							size={'sm'}
+							mr={4}
+							onClick={handleLogout}
+						>
+							Sair
+						</Button>
+					) : (
+						<>
+							<Button
+								variant={'solid'}
+								colorScheme={'teal'}
+								size={'sm'}
+								mr={4}
+								onClick={() => navigate('/sign-up')}
+							>
+								Cadastrar
+							</Button>
+							<Button onClick={() => navigate('/sign-in')} size={'sm'}>
+								Entrar
+							</Button>
+						</>
+					)}
 				</Flex>
 			</Flex>
 
 			{isOpen ? (
 				<Box pb={4} display={{ md: 'none' }}>
 					<Stack as={'nav'} spacing={4}>
-						{Links.map((link) => (
+						{filteredLinks.map((link) => (
 							<NavLink key={link.name} name={link.name} path={link.path} />
 						))}
 					</Stack>

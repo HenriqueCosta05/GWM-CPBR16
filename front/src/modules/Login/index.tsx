@@ -15,7 +15,8 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
+import baseApi from '../../common/api';
 
 type FormValues = {
 	email: string;
@@ -29,8 +30,17 @@ const Login: React.FC = () => {
 		formState: { errors },
 	} = useForm<FormValues>();
 
-	const onSubmit: SubmitHandler<FormValues> = (data) => {
-		console.log(data);
+	const onSubmit: SubmitHandler<FormValues> = async (data) => {
+		const res = await baseApi.post(`login`, data);
+		console.log('res.status', res.status);
+
+		if (res.status >= 200 && res.status <= 300) {
+			localStorage.setItem('all', JSON.stringify(res.data));
+			localStorage.setItem('userRole', res.data.userRole);
+			navigate('/home');
+		} else {
+			alert('Email ou senha inválidos');
+		}
 	};
 
 	const navigate = useNavigate();

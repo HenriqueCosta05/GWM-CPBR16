@@ -42,7 +42,7 @@ const useHandleSubmit = (selectedDate: Date | null, selectedTime: Date | null, t
             guestEmail
         )}&sf=true&output=xml`;
 
-        console.log(googleCalendarLink);
+        console.log("googleCalendarLink:", googleCalendarLink);
 
         // Open the Google Calendar link in a new tab
         window.open(googleCalendarLink, '_blank');

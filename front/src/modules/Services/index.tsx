@@ -1,6 +1,5 @@
 //@ts-nocheck
-
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	ChakraProvider,
 	Box,
@@ -12,18 +11,25 @@ import {
 	Th,
 	Td,
 	Flex,
-	Select,
+	Input,
+	FormControl,
+	FormLabel,
 } from '@chakra-ui/react';
 import { useTable, usePagination } from 'react-table';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import useHandleSubmit from '../../hooks/useHandleSubmit';
 
 const data = Array.from({ length: 50 }, (_, i) => ({
 	id: i + 1,
 	name: `Person ${i + 1}`,
 	date: new Date(),
 }));
-
+const handleSubmit = () => {
+	const url =
+		'https://calendar.google.com/calendar/r/eventedit?text=Atendimento%20-%20Cuidados%20na%20gravidez&dates=20240726T140000Z/20240726T140000Z&details=Atendimento%20referente%20a%20cuidados%20na%20gravidez.&location=Office&add=conference&conference=hangoutsMeet&add=&sf=true&output=xml';
+	window.open(url, '_blank');
+};
 const columns = [
 	{
 		Header: 'ID',
@@ -42,7 +48,7 @@ const columns = [
 	{
 		Header: 'Ações',
 		Cell: ({ row }) => (
-			<Button colorScheme="teal" onClick={() => console.log(row.original)}>
+			<Button colorScheme="teal" onClick={handleSubmit}>
 				Aceitar Agendamento
 			</Button>
 		),
@@ -74,85 +80,82 @@ function App() {
 		usePagination
 	);
 
+	const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+	const [selectedTime, setSelectedTime] = useState<Date | null>(null);
+	const [textDate, setTextDate] = useState('');
+	const [textTime, setTextTime] = useState('');
+
 	return (
-		// <ChakraProvider>
-		<Box p={4}>
-			<Table {...getTableProps()}>
-				<Thead>
-					{headerGroups.map((headerGroup) => (
-						<Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-							{headerGroup.headers.map((column) => (
-								<Th {...column.getHeaderProps()} key={column.id}>
-									{column.render('Header')}
-								</Th>
-							))}
-						</Tr>
-					))}
-				</Thead>
-				<Tbody {...getTableBodyProps()}>
-					{page.map((row) => {
-						prepareRow(row);
-						return (
-							<Tr {...row.getRowProps()} key={row.id}>
-								{row.cells.map((cell) => (
-									<Td {...cell.getCellProps()} key={cell.column.id}>
-										{cell.render('Cell')}
-									</Td>
+		<ChakraProvider>
+			<Box p={4}>
+				<Table {...getTableProps()}>
+					<Thead>
+						{headerGroups.map((headerGroup) => (
+							<Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+								{headerGroup.headers.map((column) => (
+									<Th {...column.getHeaderProps()} key={column.id}>
+										{column.render('Header')}
+									</Th>
 								))}
 							</Tr>
-						);
-					})}
-				</Tbody>
-			</Table>
-			{/* <Flex mt={4} alignItems="center" justifyContent="space-between">
-				<Flex>
-					<Button
-						onClick={() => gotoPage(0)}
-						disabled={!canPreviousPage}
-						mr={2}
-					>
-						{'<<'}
+						))}
+					</Thead>
+					<Tbody {...getTableBodyProps()}>
+						{page.map((row) => {
+							prepareRow(row);
+							return (
+								<Tr {...row.getRowProps()} key={row.id}>
+									{row.cells.map((cell) => (
+										<Td {...cell.getCellProps()} key={cell.column.id}>
+											{cell.render('Cell')}
+										</Td>
+									))}
+								</Tr>
+							);
+						})}
+					</Tbody>
+				</Table>
+				<Flex mt={4} justify="space-between" align="center">
+					<Button onClick={() => previousPage()} disabled={!canPreviousPage}>
+						Previous
 					</Button>
-					<Button
-						onClick={() => previousPage()}
-						disabled={!canPreviousPage}
-						mr={2}
-					>
-						{'<'}
-					</Button>
-					<Button onClick={() => nextPage()} disabled={!canNextPage} mr={2}>
-						{'>'}
-					</Button>
-					<Button
-						onClick={() => gotoPage(pageCount - 1)}
-						disabled={!canNextPage}
-					>
-						{'>>'}
+					<Box>
+						Page{' '}
+						<strong>
+							{pageIndex + 1} of {pageOptions.length}
+						</strong>
+					</Box>
+					<Button onClick={() => nextPage()} disabled={!canNextPage}>
+						Next
 					</Button>
 				</Flex>
-				<Flex alignItems="center">
-						<span>
-							Página{' '}
-							<strong>
-								{pageIndex + 1} de {pageOptions.length}
-							</strong>{' '}
-						</span>
-						<Select
-							ml={4}
-							value={pageSize}
-							onChange={(e) => setPageSize(Number(e.target.value))}
-							width="auto"
-						>
-							{[10, 20, 30, 40, 50].map((pageSize) => (
-								<option key={pageSize} value={pageSize}>
-									Mostrar {pageSize}
-								</option>
-							))}
-						</Select>
-					</Flex>
-			</Flex> */}
-		</Box>
-		// </ChakraProvider>
+				<Box mt={4}>
+					<FormControl as="form" onSubmit={handleSubmit}>
+						<FormLabel>Data</FormLabel>
+						<Input
+							type="date"
+							value={textDate}
+							onChange={(e) => {
+								setTextDate(e.target.value);
+								setSelectedDate(e.target.valueAsDate);
+							}}
+						/>
+						<FormLabel>Hora</FormLabel>
+						<Input
+							type="time"
+							value={textTime}
+							onChange={(e) => {
+								setTextTime(e.target.value);
+								setSelectedTime(e.target.valueAsDate);
+							}}
+						/>
+						<Button type="submit" colorScheme="teal" mt={4}>
+							Submit
+						</Button>
+					</FormControl>
+				</Box>
+			</Box>
+		</ChakraProvider>
 	);
 }
 
