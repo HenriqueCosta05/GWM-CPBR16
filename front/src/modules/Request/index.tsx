@@ -98,8 +98,8 @@ const RequestForm = () => {
 											//@ts-ignore
 											(inputProps) => (
 												<Input
+													minW={360}
 													{...inputProps}
-													width="190%"
 													placeholder="DD/MM/AAAA"
 													id="date-input"
 												/>
@@ -137,7 +137,7 @@ const RequestForm = () => {
 											(inputProps) => (
 												<Input
 													{...inputProps}
-													width="190%"
+													minW={360}
 													placeholder="HH:MM"
 													id="time-input"
 												/>

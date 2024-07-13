@@ -3,12 +3,12 @@ import Home from '../modules/Home';
 import MainApp from '../modules/Main';
 import CreateUser from '../modules/CreateUser';
 import Layout from './Layoute/Layout';
-import Navbar from '../components/NavBar';
 import Login from '../modules/Login';
 import RecoverPassword from '../modules/RecoverPassword';
 import Request from '../modules/Request';
-import JitsiMeeting from '../compnents/JitsyMeeting';
 import Meet from '../modules/Meet';
+import Services from '../modules/Services';
+import About from '../modules/About';
 
 export default function MainRoutes() {
 	return (
@@ -19,10 +19,10 @@ export default function MainRoutes() {
 				<Route path="/create-user" element={<Layout />}>
 					<Route index element={<CreateUser />} />
 				</Route>
-				<Route path="/about" element={<div>About Us</div>} />
-				<Route path="/requests" element={<div>Requests</div>} />
+				<Route path="/about" element={<About />} />
+				<Route path="/requests" element={<Services />} />
 				<Route path="/request" element={<Request />} />
-				<Route path="/services" element={<div>Services</div>} />
+				<Route path="/services" element={<Services />} />
 				<Route path="/meeting" element={<Meet />} />
 			</Route>
 			<Route path="sign-up" element={<CreateUser />} />

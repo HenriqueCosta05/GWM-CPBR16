@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import { ArrowLeftIcon } from '@chakra-ui/icons';
+import { ArrowLeftIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 
 type FormValues = {
 	email: string;
@@ -44,13 +44,13 @@ const Login: React.FC = () => {
 		>
 			<div
 				style={{
-					width: 60,
-					height: 60,
+					width: 40,
+					height: 40,
 					position: 'fixed',
 					top: 20,
 					left: 20,
-					borderRadius: 20,
-					padding: 10,
+					borderRadius: 4,
+					padding: 2,
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
@@ -59,7 +59,7 @@ const Login: React.FC = () => {
 				}}
 				onClick={() => navigate(-1)}
 			>
-				<ArrowLeftIcon w={3} h={3} />
+				<ChevronLeftIcon w={4} h={4} />
 			</div>
 			<Box
 				w="md"
